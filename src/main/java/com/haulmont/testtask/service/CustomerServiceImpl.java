@@ -15,8 +15,13 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository repository;
 
     @Override
-    public void createCustomer(Customer customer) {
+    public void createOrUpdateCustomer(Customer customer) {
         repository.save(customer);
+    }
+
+    @Override
+    public void deleteCustomer(Customer customer) {
+        repository.delete(customer);
     }
 
     @Override
