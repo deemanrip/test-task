@@ -13,7 +13,6 @@
     <vaadin.version>7.6.7</vaadin.version>
     <hibernate.version>5.3.5.Final</hibernate.version>
     <spring.version>5.0.8.RELEASE</spring.version>
-    <spring.data.version>2.0.9.RELEASE</spring.data.version>
   </properties>
 
   <repositories>
@@ -166,16 +165,6 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-commons</artifactId>
-      <version>${spring.data.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-jpa</artifactId>
-      <version>${spring.data.version}</version>
     </dependency>
 
   </dependencies>

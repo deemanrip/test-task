@@ -9,9 +9,10 @@ public class Customer {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @Column(nullable = false)
     private String surname;
 
     private String patronymic;

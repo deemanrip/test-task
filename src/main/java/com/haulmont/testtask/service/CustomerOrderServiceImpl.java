@@ -1,32 +1,38 @@
 package com.haulmont.testtask.service;
 
 import com.haulmont.testtask.model.CustomerOrder;
-import com.haulmont.testtask.repository.CustomerOrderRepository;
+import com.haulmont.testtask.dao.CustomerOrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@Transactional
 public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Autowired
-    private CustomerOrderRepository repository;
+    private CustomerOrderDao dao;
 
     @Override
-    public void createOrUpdateCustomerOrder(CustomerOrder order) {
-        repository.save(order);
+    public void createCustomerOrder(CustomerOrder order) {
+
     }
 
     @Override
-    public void deleteCustomerOrder(CustomerOrder order) {
-        repository.delete(order);
+    public void updateCustomerOrder(CustomerOrder order) {
+
     }
 
     @Override
-    public List<CustomerOrder> findAllCustomerOrders() {
-        List<CustomerOrder> result = new ArrayList<>();
-        repository.findAll().forEach(result::add);
+    public void deleteCustomerOrder(Long id) {
 
-        return result;
+    }
+
+    @Override
+    public List<CustomerOrder> getAllOrders() {
+        return null;
     }
 }

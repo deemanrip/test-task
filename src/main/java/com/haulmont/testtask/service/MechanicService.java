@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface MechanicService {
 
-    void createOrUpdateMechanic(Mechanic mechanic);
-    void deleteMechanic(Mechanic mechanic);
+    void createMechanic(Mechanic mechanic);
+    void updateMechanic(Mechanic mechanic);
+    void deleteMechanic(Long id);
 
-    List<Mechanic> findAllMechanics();
+    List<Mechanic> getAllMechanics();
 }

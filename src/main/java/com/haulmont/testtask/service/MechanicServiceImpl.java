@@ -1,34 +1,37 @@
 package com.haulmont.testtask.service;
 
+import com.haulmont.testtask.dao.MechanicDao;
 import com.haulmont.testtask.model.Mechanic;
-import com.haulmont.testtask.repository.MechanicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class MechanicServiceImpl implements MechanicService {
 
     @Autowired
-    private MechanicRepository repository;
+    private MechanicDao dao;
 
     @Override
-    public void createOrUpdateMechanic(Mechanic mechanic) {
-        repository.save(mechanic);
+    public void createMechanic(Mechanic mechanic) {
+        dao.save(mechanic);
     }
 
     @Override
-    public void deleteMechanic(Mechanic mechanic) {
-        repository.delete(mechanic);
+    public void updateMechanic(Mechanic mechanic) {
+        dao.update(mechanic);
     }
 
     @Override
-    public List<Mechanic> findAllMechanics() {
-        List<Mechanic> result = new ArrayList<>();
-        repository.findAll().forEach(result::add);
+    public void deleteMechanic(Long id) {
 
-        return result;
+    }
+
+    @Override
+    public List<Mechanic> getAllMechanics() {
+        return dao.getAll();
     }
 }

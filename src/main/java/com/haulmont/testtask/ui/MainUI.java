@@ -1,7 +1,7 @@
 package com.haulmont.testtask.ui;
 
-import com.haulmont.testtask.model.Customer;
-import com.haulmont.testtask.service.CustomerService;
+import com.haulmont.testtask.model.Mechanic;
+import com.haulmont.testtask.service.MechanicService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
@@ -18,17 +18,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MainUI extends UI {
 
     @Autowired
-    private CustomerService customerService;
+    private MechanicService mechanicService;
 
     @Override
     protected void init(VaadinRequest request) {
+
+        for (int i = 0; i < 10; i++) {
+            Mechanic mechanic = new Mechanic("test " + i, "test " + i, "test " + i, 10.2);
+            mechanicService.createMechanic(mechanic);
+        }
 
         VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         layout.setMargin(true);
 
-        BeanItemContainer<Customer> itemContainer =
-                new BeanItemContainer<>(Customer.class, customerService.findAllCustomers());
+        BeanItemContainer<Mechanic> itemContainer =
+                new BeanItemContainer<>(Mechanic.class, mechanicService.getAllMechanics());
 
         Grid grid = new Grid(itemContainer);
         grid.setColumnOrder("firstName", "surname");

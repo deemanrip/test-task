@@ -23,8 +23,8 @@ public class CustomerOrder {
     @JoinColumn(name = "mechanic_id")
     private Mechanic mechanic;
 
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDate creationDate = LocalDate.now();
 
     @Column(name = "work_completion_date")
     private LocalDate workCompletionDate;
