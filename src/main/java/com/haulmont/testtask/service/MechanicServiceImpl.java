@@ -26,12 +26,17 @@ public class MechanicServiceImpl implements MechanicService {
     }
 
     @Override
-    public void deleteMechanic(Long id) {
-
+    public void deleteMechanic(Mechanic mechanic) {
+        dao.delete(mechanic);
     }
 
     @Override
     public List<Mechanic> getAllMechanics() {
         return dao.getAll();
+    }
+
+    @Override
+    public Mechanic getMechanicById(Long id) {
+        return dao.getById(id);
     }
 }

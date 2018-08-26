@@ -21,12 +21,12 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public void update(Customer customer) {
-
+        entityManager.merge(customer);
     }
 
     @Override
     public void delete(Customer customer) {
-        entityManager.remove(customer);
+        entityManager.remove( entityManager.merge(customer) );
     }
 
     @Override

@@ -29,15 +29,15 @@ public class PersistenceJPAConfig {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan("com.haulmont.testtask.model");
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource());
+        emf.setPackagesToScan("com.haulmont.testtask.model");
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(additionalProperties());
+        emf.setJpaVendorAdapter(vendorAdapter);
+        emf.setJpaProperties(additionalProperties());
 
-        return em;
+        return emf;
     }
 
     @Bean
@@ -67,7 +67,7 @@ public class PersistenceJPAConfig {
     private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+//        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
         properties.setProperty("hibernate.show_sql", "true");
 
         return properties;

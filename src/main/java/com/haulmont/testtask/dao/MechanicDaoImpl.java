@@ -21,12 +21,12 @@ public class MechanicDaoImpl implements MechanicDao {
 
     @Override
     public void update(Mechanic mechanic) {
-
+        entityManager.merge(mechanic);
     }
 
     @Override
     public void delete(Mechanic mechanic) {
-        entityManager.remove(mechanic);
+        entityManager.remove( entityManager.merge(mechanic) );
     }
 
     @Override

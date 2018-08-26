@@ -8,7 +8,8 @@ public interface CustomerService {
 
     void createCustomer(Customer customer);
     void updateCustomer(Customer customer);
-    void deleteCustomer(Long id);
+    void deleteCustomer(Customer customer);
 
     List<Customer> getAllCustomers();
+    Customer getCustomerById(Long id);
 }

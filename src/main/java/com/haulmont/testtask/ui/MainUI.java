@@ -1,15 +1,11 @@
 package com.haulmont.testtask.ui;
 
-import com.haulmont.testtask.model.Mechanic;
-import com.haulmont.testtask.service.MechanicService;
+import com.haulmont.testtask.ui.tab.CustomerTab;
+import com.haulmont.testtask.ui.tab.MechanicTab;
 import com.vaadin.annotations.Theme;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,29 +14,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MainUI extends UI {
 
     @Autowired
-    private MechanicService mechanicService;
+    private CustomerTab customerTab;
+
+    @Autowired
+    private MechanicTab mechanicTab;
 
     @Override
     protected void init(VaadinRequest request) {
+        getPage().setTitle("Test Task");
 
-        for (int i = 0; i < 10; i++) {
-            Mechanic mechanic = new Mechanic("test " + i, "test " + i, "test " + i, 10.2);
-            mechanicService.createMechanic(mechanic);
-        }
+        HorizontalLayout footer = new HorizontalLayout();
+        footer.setHeight("100");
+        footer.setWidth("100%");
 
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setMargin(true);
+        VerticalLayout contentLayout = new VerticalLayout();
+        contentLayout.setSizeFull();
 
-        BeanItemContainer<Mechanic> itemContainer =
-                new BeanItemContainer<>(Mechanic.class, mechanicService.getAllMechanics());
+        Panel contentPanel = new Panel(contentLayout);
+        contentPanel.setSizeFull();
 
-        Grid grid = new Grid(itemContainer);
-        grid.setColumnOrder("firstName", "surname");
+        TabSheet tabSheet = new TabSheet();
+        tabSheet.addTab(customerTab, "Клиенты");
+        tabSheet.addTab(mechanicTab, "Механики");
+        tabSheet.setSizeFull();
 
-        layout.addComponent(new Label("Main UI"));
-        layout.addComponent(grid);
+        contentLayout.addComponent(tabSheet);
 
-        setContent(layout);
+        VerticalLayout mainLayout = new VerticalLayout(contentPanel, footer);
+        mainLayout.setSizeFull();
+        mainLayout.setExpandRatio(contentPanel, 1);
+
+        setContent(mainLayout);
     }
 }

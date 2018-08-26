@@ -10,15 +10,15 @@ public class Customer {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    private String firstName;
+    private String firstName = "";
 
     @Column(nullable = false)
-    private String surname;
+    private String surname = "";
 
-    private String patronymic;
+    private String patronymic = "";
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private String phoneNumber = "";
 
     public Customer() {
     }

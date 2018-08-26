@@ -21,7 +21,7 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
 
     @Override
     public void update(CustomerOrder order) {
-
+        entityManager.merge(order);
     }
 
     @Override

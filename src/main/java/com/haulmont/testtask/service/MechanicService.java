@@ -8,7 +8,8 @@ public interface MechanicService {
 
     void createMechanic(Mechanic mechanic);
     void updateMechanic(Mechanic mechanic);
-    void deleteMechanic(Long id);
+    void deleteMechanic(Mechanic mechanic);
 
     List<Mechanic> getAllMechanics();
+    Mechanic getMechanicById(Long id);
 }

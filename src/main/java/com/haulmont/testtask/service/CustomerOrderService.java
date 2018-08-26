@@ -6,9 +6,10 @@ import java.util.List;
 
 public interface CustomerOrderService {
 
-    void createCustomerOrder(CustomerOrder order);
-    void updateCustomerOrder(CustomerOrder order);
-    void deleteCustomerOrder(Long id);
+    void createOrder(CustomerOrder order);
+    void updateOrder(CustomerOrder order);
+    void deleteOrder(CustomerOrder order);
 
     List<CustomerOrder> getAllOrders();
+    CustomerOrder getOrderById(Long id);
 }
