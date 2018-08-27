@@ -13,6 +13,7 @@ public class CustomerOrder {
     @GeneratedValue
     private Long id;
 
+    @Column(length = 1000)
     private String description;
 
     @ManyToOne
