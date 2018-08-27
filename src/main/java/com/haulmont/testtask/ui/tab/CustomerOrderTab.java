@@ -41,7 +41,7 @@ public class CustomerOrderTab extends VerticalLayout {
     @PostConstruct
     private void init() {
         updateGridData();
-        orderGrid.set();
+        orderGrid.configureColumns();
 
         addComponent( getGridToolbar() );
         addComponent( getFilterFieldGroup() );

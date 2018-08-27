@@ -1,6 +1,7 @@
 package com.haulmont.testtask.service;
 
 import com.haulmont.testtask.model.Mechanic;
+import com.haulmont.testtask.model.MechanicOrderAmount;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface MechanicService {
 
     List<Mechanic> getAllMechanics();
     Mechanic getMechanicById(Long id);
+    List<MechanicOrderAmount> getMechanicOrderAmounts();
 }

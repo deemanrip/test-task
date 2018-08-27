@@ -1,6 +1,7 @@
 package com.haulmont.testtask.dao;
 
 import com.haulmont.testtask.model.Mechanic;
+import com.haulmont.testtask.model.MechanicOrderAmount;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -40,5 +41,16 @@ public class MechanicDaoImpl implements MechanicDao {
     @Override
     public Mechanic getById(Long id) {
         return entityManager.find(Mechanic.class, id);
+    }
+
+    @Override
+    public List<MechanicOrderAmount> getMechanicOrderAmounts() {
+        String jpqlQuery =
+                " select new com.haulmont.testtask.model.MechanicOrderAmount(o.mechanic, count(o))" +
+                " from CustomerOrder o" +
+                " group by o.mechanic";
+
+        TypedQuery<MechanicOrderAmount> query = entityManager.createQuery(jpqlQuery, MechanicOrderAmount.class);
+        return query.getResultList();
     }
 }

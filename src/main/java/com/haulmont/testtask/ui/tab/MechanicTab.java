@@ -1,11 +1,13 @@
 package com.haulmont.testtask.ui.tab;
 
 import com.haulmont.testtask.model.Mechanic;
+import com.haulmont.testtask.model.MechanicOrderAmount;
 import com.haulmont.testtask.service.MechanicService;
 import com.haulmont.testtask.ui.auxiliary.ConfirmDialog;
 import com.haulmont.testtask.ui.auxiliary.ErrorDialog;
 import com.haulmont.testtask.ui.form.MechanicFormWindow;
 import com.haulmont.testtask.ui.grid.MechanicGrid;
+import com.haulmont.testtask.ui.grid.MechanicOrderAmountGrid;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -31,7 +33,7 @@ public class MechanicTab extends VerticalLayout {
     @PostConstruct
     private void init() {
         updateGridData();
-        mechanicGrid.set();
+        mechanicGrid.configureColumns();
 
         addComponent(getGridToolbar());
         addComponent(mechanicGrid);
@@ -131,7 +133,21 @@ public class MechanicTab extends VerticalLayout {
 
     private Button getViewStatisticsButton() {
         return new Button("Посмотреть статистику", clickEvent -> {
+            Window statisticsWindow = new Window("Статистика");
+            statisticsWindow.center();
+            statisticsWindow.setResizable(false);
+            statisticsWindow.setModal(true);
+            statisticsWindow.setHeight("600");
+            statisticsWindow.setWidth("800");
 
+            BeanItemContainer<MechanicOrderAmount> container =
+                    new BeanItemContainer<>(MechanicOrderAmount.class, mechanicService.getMechanicOrderAmounts());
+            MechanicOrderAmountGrid statisticsGrid = new MechanicOrderAmountGrid();
+            statisticsGrid.setContainerDataSource(container);
+            statisticsGrid.configureColumns();
+
+            statisticsWindow.setContent(statisticsGrid);
+            getUI().addWindow(statisticsWindow);
         });
     }
 }

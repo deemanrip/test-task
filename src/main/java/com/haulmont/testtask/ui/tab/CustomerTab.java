@@ -31,7 +31,7 @@ public class CustomerTab extends VerticalLayout {
     @PostConstruct
     private void init() {
         updateGridData();
-        customerGrid.set();
+        customerGrid.configureColumns();
 
         addComponent(getGridToolbar());
         addComponent(customerGrid);

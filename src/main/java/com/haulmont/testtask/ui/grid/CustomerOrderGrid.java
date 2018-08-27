@@ -8,7 +8,7 @@ import com.vaadin.ui.Grid;
 @UIScope
 public class CustomerOrderGrid extends Grid {
 
-    public void set() {
+    public void configureColumns() {
         removeColumn("id");
 
         getColumn("description").setHeaderCaption("Описание");
