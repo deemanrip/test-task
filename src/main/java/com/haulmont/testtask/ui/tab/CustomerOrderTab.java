@@ -1,11 +1,15 @@
 package com.haulmont.testtask.ui.tab;
 
+import com.haulmont.testtask.model.Customer;
+import com.haulmont.testtask.model.CustomerOrder;
 import com.haulmont.testtask.model.Mechanic;
+import com.haulmont.testtask.service.CustomerOrderService;
+import com.haulmont.testtask.service.CustomerService;
 import com.haulmont.testtask.service.MechanicService;
 import com.haulmont.testtask.ui.auxiliary.ConfirmDialog;
 import com.haulmont.testtask.ui.auxiliary.ErrorDialog;
-import com.haulmont.testtask.ui.form.MechanicFormWindow;
-import com.haulmont.testtask.ui.grid.MechanicGrid;
+import com.haulmont.testtask.ui.form.CustomerOrderFormWindow;
+import com.haulmont.testtask.ui.grid.CustomerOrderGrid;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.spring.annotation.SpringComponent;
@@ -20,29 +24,35 @@ import javax.annotation.PostConstruct;
 
 @SpringComponent
 @UIScope
-public class MechanicTab extends VerticalLayout {
+public class CustomerOrderTab extends VerticalLayout {
+
+    @Autowired
+    private CustomerOrderService orderService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @Autowired
     private MechanicService mechanicService;
 
     @Autowired
-    private MechanicGrid mechanicGrid;
+    private CustomerOrderGrid orderGrid;
 
     @PostConstruct
     private void init() {
         updateGridData();
-        mechanicGrid.set();
+        orderGrid.set();
 
         addComponent(getButtonGroup());
-        addComponent(mechanicGrid);
-        setExpandRatio(mechanicGrid, 1);
+        addComponent(orderGrid);
+        setExpandRatio(orderGrid, 1);
         setSizeFull();
     }
 
     private void updateGridData() {
-        BeanItemContainer<Mechanic> container =
-                new BeanItemContainer<>(Mechanic.class, mechanicService.getAllMechanics());
-        mechanicGrid.setContainerDataSource(container);
+        BeanItemContainer<CustomerOrder> container =
+                new BeanItemContainer<>(CustomerOrder.class, orderService.getAllOrders());
+        orderGrid.setContainerDataSource(container);
     }
 
     private HorizontalLayout getButtonGroup() {
@@ -51,7 +61,6 @@ public class MechanicTab extends VerticalLayout {
         buttonGroup.addComponent( getAddButton() );
         buttonGroup.addComponent( getEditButton() );
         buttonGroup.addComponent( getDeleteButton() );
-        buttonGroup.addComponent( getViewStatisticsButton() );
 
         buttonGroup.setHeight("100");
         buttonGroup.setWidth("100%");
@@ -62,14 +71,18 @@ public class MechanicTab extends VerticalLayout {
 
     private Button getAddButton() {
         return new Button("Добавить", clickEvent -> {
-            MechanicFormWindow mechanicFormWindow = new MechanicFormWindow("Создание новой записи", new Mechanic());
-            mechanicFormWindow.addConfirmButtonListener(confirmClickEvent -> {
-                BeanFieldGroup<Mechanic> binder = mechanicFormWindow.getBinder();
+            BeanItemContainer<Customer> customers = new BeanItemContainer<>(Customer.class, customerService.getAllCustomers());
+            BeanItemContainer<Mechanic> mechanics = new BeanItemContainer<>(Mechanic.class, mechanicService.getAllMechanics());
+
+            CustomerOrderFormWindow orderFormWindow =
+                    new CustomerOrderFormWindow("Создание новой записи", new CustomerOrder(), customers, mechanics);
+            orderFormWindow.addConfirmButtonListener(confirmClickEvent -> {
+                BeanFieldGroup<CustomerOrder> binder = orderFormWindow.getBinder();
 
                 if (binder.isValid()) {
-                    mechanicFormWindow.close();
-                    Mechanic newMechanic = binder.getItemDataSource().getBean();
-                    mechanicService.createMechanic(newMechanic);
+                    orderFormWindow.close();
+                    CustomerOrder newOrder = binder.getItemDataSource().getBean();
+                    orderService.createOrder(newOrder);
                     updateGridData();
                 } else {
                     ErrorDialog errorDialog = new ErrorDialog("Неверно заданы значения");
@@ -77,27 +90,31 @@ public class MechanicTab extends VerticalLayout {
                 }
             });
 
-            getUI().addWindow(mechanicFormWindow);
+            getUI().addWindow(orderFormWindow);
         });
     }
 
     private Button getEditButton() {
         return new Button("Изменить", clickEvent -> {
-            Mechanic selectedMechanic = (Mechanic) mechanicGrid.getSelectedRow();
-            if (selectedMechanic == null) {
+            CustomerOrder selectedOrder = (CustomerOrder) orderGrid.getSelectedRow();
+            if (selectedOrder == null) {
                 Window errorDialog = new ErrorDialog("Не выбрана ни одна запись");
                 getUI().addWindow(errorDialog);
                 return;
             }
 
-            MechanicFormWindow mechanicFormWindow = new MechanicFormWindow("Редактирование записи", selectedMechanic);
-            mechanicFormWindow.addConfirmButtonListener(confirmClickEvent -> {
-                BeanFieldGroup<Mechanic> binder = mechanicFormWindow.getBinder();
+            BeanItemContainer<Customer> customers = new BeanItemContainer<>(Customer.class, customerService.getAllCustomers());
+            BeanItemContainer<Mechanic> mechanics = new BeanItemContainer<>(Mechanic.class, mechanicService.getAllMechanics());
+
+            CustomerOrderFormWindow orderFormWindow =
+                    new CustomerOrderFormWindow("Редактирование записи", selectedOrder, customers, mechanics);
+            orderFormWindow.addConfirmButtonListener(confirmClickEvent -> {
+                BeanFieldGroup<CustomerOrder> binder = orderFormWindow.getBinder();
 
                 if (binder.isValid()) {
-                    mechanicFormWindow.close();
-                    Mechanic updatedMechanic = binder.getItemDataSource().getBean();
-                    mechanicService.updateMechanic(updatedMechanic);
+                    orderFormWindow.close();
+                    CustomerOrder updatedOrder = binder.getItemDataSource().getBean();
+                    orderService.updateOrder(updatedOrder);
                     updateGridData();
                 } else {
                     ErrorDialog errorDialog = new ErrorDialog("Неверно заданы значения");
@@ -105,15 +122,15 @@ public class MechanicTab extends VerticalLayout {
                 }
             });
 
-            getUI().addWindow(mechanicFormWindow);
+            getUI().addWindow(orderFormWindow);
         });
     }
 
     private Button getDeleteButton() {
         return new Button("Удалить", clickEvent -> {
-            Mechanic selectedMechanic = (Mechanic) mechanicGrid.getSelectedRow();
+            CustomerOrder selectedOrder = (CustomerOrder) orderGrid.getSelectedRow();
 
-            if (selectedMechanic == null) {
+            if (selectedOrder == null) {
                 Window errorDialog = new ErrorDialog("Не выбрана ни одна запись");
                 getUI().addWindow(errorDialog);
                 return;
@@ -122,16 +139,10 @@ public class MechanicTab extends VerticalLayout {
             ConfirmDialog confirmDialog = new ConfirmDialog("Удалить выбранную запись?");
             confirmDialog.addConfirmButtonListener(confirmClickEvent -> {
                 confirmDialog.close();
-                mechanicService.deleteMechanic(selectedMechanic);
+                orderService.deleteOrder(selectedOrder);
                 updateGridData();
             });
             getUI().addWindow(confirmDialog);
-        });
-    }
-
-    private Button getViewStatisticsButton() {
-        return new Button("Посмотреть статистику", clickEvent -> {
-
         });
     }
 }

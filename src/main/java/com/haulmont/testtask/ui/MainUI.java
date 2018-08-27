@@ -1,5 +1,6 @@
 package com.haulmont.testtask.ui;
 
+import com.haulmont.testtask.ui.tab.CustomerOrderTab;
 import com.haulmont.testtask.ui.tab.CustomerTab;
 import com.haulmont.testtask.ui.tab.MechanicTab;
 import com.vaadin.annotations.Theme;
@@ -19,6 +20,9 @@ public class MainUI extends UI {
     @Autowired
     private MechanicTab mechanicTab;
 
+    @Autowired
+    private CustomerOrderTab customerOrderTab;
+
     @Override
     protected void init(VaadinRequest request) {
         getPage().setTitle("Test Task");
@@ -36,6 +40,7 @@ public class MainUI extends UI {
         TabSheet tabSheet = new TabSheet();
         tabSheet.addTab(customerTab, "Клиенты");
         tabSheet.addTab(mechanicTab, "Механики");
+        tabSheet.addTab(customerOrderTab, "Заказы");
         tabSheet.setSizeFull();
 
         contentLayout.addComponent(tabSheet);

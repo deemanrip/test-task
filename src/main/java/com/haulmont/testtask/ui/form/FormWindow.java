@@ -3,14 +3,13 @@ package com.haulmont.testtask.ui.form;
 import com.vaadin.ui.*;
 
 public class FormWindow extends Window {
-    private Panel panel;
     private Button confirmButton;
     private VerticalLayout verticalLayout;
 
     public FormWindow(String caption) {
         super(caption);
 
-        panel = new Panel();
+        Panel panel = new Panel();
         panel.setSizeFull();
         confirmButton = new Button("ОК");
         verticalLayout = new VerticalLayout();
@@ -20,21 +19,18 @@ public class FormWindow extends Window {
 
         setModal(true);
         setResizable(false);
-        setHeight("500");
-        setWidth("700");
         center();
 
         HorizontalLayout buttonGroup = new HorizontalLayout();
-        buttonGroup.setSizeFull();
+        buttonGroup.setWidth("100%");
+        buttonGroup.setHeight("100");
         buttonGroup.setMargin(true);
 
         verticalLayout.addComponent(buttonGroup);
-        verticalLayout.setMargin(true);
         verticalLayout.setSizeFull();
 
         buttonGroup.addComponent(confirmButton);
         buttonGroup.addComponent(cancelButton);
-        verticalLayout.setComponentAlignment(buttonGroup, Alignment.BOTTOM_CENTER);
 
         panel.setContent(verticalLayout);
         setContent(panel);
@@ -42,6 +38,7 @@ public class FormWindow extends Window {
 
     public void addFormLayout(FormLayout formLayout) {
         verticalLayout.addComponent(formLayout, 0);
+        verticalLayout.setExpandRatio(formLayout, 1);
     }
 
     public void addConfirmButtonListener(Button.ClickListener clickListener) {

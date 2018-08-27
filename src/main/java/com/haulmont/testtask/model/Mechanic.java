@@ -10,12 +10,12 @@ public class Mechanic {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    private String firstName = "";
+    private String firstName;
 
     @Column(nullable = false)
-    private String surname = "";
+    private String surname;
 
-    private String patronymic = "";
+    private String patronymic;
 
     @Column(name = "hourly_payment")
     private double hourlyPayment;
@@ -68,5 +68,10 @@ public class Mechanic {
 
     public void setHourlyPayment(double hourlyPayment) {
         this.hourlyPayment = hourlyPayment;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + patronymic + " " + surname;
     }
 }

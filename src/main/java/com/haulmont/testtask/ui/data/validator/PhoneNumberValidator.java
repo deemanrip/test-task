@@ -1,4 +1,4 @@
-package com.haulmont.testtask.ui.validator;
+package com.haulmont.testtask.ui.data.validator;
 
 import com.vaadin.data.validator.AbstractStringValidator;
 

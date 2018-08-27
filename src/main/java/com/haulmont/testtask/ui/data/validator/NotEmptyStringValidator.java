@@ -1,10 +1,10 @@
-package com.haulmont.testtask.ui.validator;
+package com.haulmont.testtask.ui.data.validator;
 
 import com.vaadin.data.validator.AbstractStringValidator;
 
-public class EmptyStringValidator extends AbstractStringValidator {
+public class NotEmptyStringValidator extends AbstractStringValidator {
 
-    public EmptyStringValidator() {
+    public NotEmptyStringValidator() {
         super("Пустая строка недопустима");
     }
 

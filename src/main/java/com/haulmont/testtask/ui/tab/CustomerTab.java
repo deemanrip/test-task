@@ -61,7 +61,7 @@ public class CustomerTab extends VerticalLayout {
 
     private Button getAddButton() {
         return new Button("Добавить", clickEvent -> {
-            CustomerFormWindow customerFormWindow = new CustomerFormWindow(new Customer());
+            CustomerFormWindow customerFormWindow = new CustomerFormWindow("Создание новой записи", new Customer());
             customerFormWindow.addConfirmButtonListener(confirmClickEvent -> {
                 BeanFieldGroup<Customer> binder = customerFormWindow.getBinder();
 
@@ -89,7 +89,7 @@ public class CustomerTab extends VerticalLayout {
                 return;
             }
 
-            CustomerFormWindow customerFormWindow = new CustomerFormWindow(selectedCustomer);
+            CustomerFormWindow customerFormWindow = new CustomerFormWindow("Редактирование записи", selectedCustomer);
             customerFormWindow.addConfirmButtonListener(confirmClickEvent -> {
                 BeanFieldGroup<Customer> binder = customerFormWindow.getBinder();
 

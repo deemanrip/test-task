@@ -26,7 +26,7 @@ public class CustomerOrderDaoImpl implements CustomerOrderDao {
 
     @Override
     public void delete(CustomerOrder order) {
-        entityManager.remove(order);
+        entityManager.remove( entityManager.merge(order) );
     }
 
     @Override

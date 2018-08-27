@@ -10,8 +10,8 @@ public class ConfirmDialog extends Window {
         super("Подтверждение");
         setModal(true);
         setResizable(false);
-        setHeight("200");
-        setWidth("300");
+        setHeight("170");
+        setWidth("280");
 
         Button cancelButton = new Button("Нет", clickEvent -> this.close());
         confirmButton = new Button("Да");
@@ -19,9 +19,11 @@ public class ConfirmDialog extends Window {
 
         HorizontalLayout buttonGroup = new HorizontalLayout(confirmButton, cancelButton);
         buttonGroup.setMargin(true);
-        buttonGroup.setSizeFull();
+        buttonGroup.setHeight("80");
+        buttonGroup.setWidth("100%");
 
         VerticalLayout layout = new VerticalLayout(message, buttonGroup);
+        layout.setExpandRatio(message, 1);
         layout.setComponentAlignment(buttonGroup, Alignment.BOTTOM_CENTER);
         layout.setMargin(true);
         layout.setSizeFull();

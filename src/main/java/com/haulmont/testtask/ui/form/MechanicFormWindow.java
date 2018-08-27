@@ -1,11 +1,10 @@
 package com.haulmont.testtask.ui.form;
 
 import com.haulmont.testtask.model.Mechanic;
-import com.haulmont.testtask.ui.validator.EmptyStringValidator;
-import com.haulmont.testtask.ui.validator.NotDigitValidator;
+import com.haulmont.testtask.ui.data.validator.NotEmptyStringValidator;
+import com.haulmont.testtask.ui.data.validator.NotDigitValidator;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.converter.StringToDoubleConverter;
 import com.vaadin.data.validator.NullValidator;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
@@ -26,24 +25,28 @@ public class MechanicFormWindow extends FormWindow {
     @PropertyId("hourlyPayment")
     private TextField hourlyPaymentField = new TextField("Почасовая оплата");
 
-    public MechanicFormWindow(Mechanic mechanic) {
-        super("Редактирование записи");
+    public MechanicFormWindow(String caption, Mechanic mechanic) {
+        super(caption);
 
-        addFieldValidators();
+        setHeight("400");
+        setWidth("400");
 
-        FormLayout layout = new FormLayout();
-        layout.addComponent(nameField);
-        layout.addComponent(surnameField);
-        layout.addComponent(patronymicField);
-        layout.addComponent(hourlyPaymentField);
-        layout.setSpacing(true);
+        configureFields();
+
+        FormLayout formLayout = new FormLayout();
+        formLayout.addComponent(nameField);
+        formLayout.addComponent(surnameField);
+        formLayout.addComponent(patronymicField);
+        formLayout.addComponent(hourlyPaymentField);
+        formLayout.setSpacing(true);
+        formLayout.setMargin(true);
 
         binder = new BeanFieldGroup<>(Mechanic.class);
         binder.setBuffered(false);
         binder.setItemDataSource(mechanic);
         binder.bindMemberFields(this);
 
-        addFormLayout(layout);
+        addFormLayout(formLayout);
     }
 
     public BeanFieldGroup<Mechanic> getBinder() {
@@ -54,25 +57,27 @@ public class MechanicFormWindow extends FormWindow {
         this.binder = binder;
     }
 
-    private void addFieldValidators() {
+    private void configureFields() {
+        nameField.setNullRepresentation("");
         nameField.setRequired(true);
         nameField.addValidator(new NullValidator("Обязательное поле", false));
         nameField.addValidator(new NotDigitValidator());
-        nameField.addValidator(new EmptyStringValidator());
+        nameField.addValidator(new NotEmptyStringValidator());
 
+        surnameField.setNullRepresentation("");
         surnameField.setRequired(true);
         surnameField.addValidator(new NullValidator("Обязательное поле", false));
         surnameField.addValidator(new NotDigitValidator());
-        surnameField.addValidator(new EmptyStringValidator());
+        surnameField.addValidator(new NotEmptyStringValidator());
 
+        patronymicField.setNullRepresentation("");
         patronymicField.setRequired(true);
         patronymicField.addValidator(new NullValidator("Обязательное поле", false));
         patronymicField.addValidator(new NotDigitValidator());
-        patronymicField.addValidator(new EmptyStringValidator());
+        patronymicField.addValidator(new NotEmptyStringValidator());
 
         hourlyPaymentField.setRequired(true);
-        hourlyPaymentField.addValidator(new NullValidator("Обязательное поле", false));
-        hourlyPaymentField.addValidator(new EmptyStringValidator());
-        hourlyPaymentField.setConverter(new StringToDoubleConverter());
+        hourlyPaymentField.setNullRepresentation("0");
+        hourlyPaymentField.setConversionError("Необходимо указать число");
     }
 }
