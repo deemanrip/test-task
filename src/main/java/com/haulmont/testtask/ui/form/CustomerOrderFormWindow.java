@@ -8,6 +8,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.NullValidator;
 import com.vaadin.ui.*;
 
 import java.util.EnumSet;
@@ -62,6 +63,8 @@ public class CustomerOrderFormWindow extends FormWindow {
         binder.setItemDataSource(order);
         binder.bindMemberFields(this);
 
+        creationDateField.setEnabled(false);
+
         addFormLayout(formLayout);
     }
 
@@ -77,16 +80,21 @@ public class CustomerOrderFormWindow extends FormWindow {
         descriptionField.setRequired(true);
         descriptionField.setNullRepresentation("");
         descriptionField.addValidator(new NotEmptyStringValidator());
+        descriptionField.addValidator(new NullValidator("Обязательное поле", false));
 
         customerField.setContainerDataSource(customers);
+        customerField.addValidator(new NullValidator("Обязательное поле", false));
 
         mechanicField.setContainerDataSource(mechanics);
+        mechanicField.addValidator(new NullValidator("Обязательное поле", false));
 
         creationDateField.setConverter(new DateToLocalDateConverter());
+        creationDateField.setEnabled(false);
         creationDateField.setReadOnly(true);
 
         workCompletionDateField.setConverter(new DateToLocalDateConverter());
         workCompletionDateField.setRequired(true);
+        workCompletionDateField.addValidator(new NullValidator("Обязательное поле", false));
 
         costField.setRequired(true);
         costField.setNullRepresentation("0");
@@ -95,5 +103,6 @@ public class CustomerOrderFormWindow extends FormWindow {
         BeanItemContainer<OrderStatus> container =
                 new BeanItemContainer<>(OrderStatus.class, EnumSet.allOf(OrderStatus.class));
         orderStatusField.setContainerDataSource(container);
+        orderStatusField.addValidator(new NullValidator("Обязательное поле", false));
     }
 }

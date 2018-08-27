@@ -1,5 +1,6 @@
 package com.haulmont.testtask.dao;
 
+import com.haulmont.testtask.invariants.OrderStatus;
 import com.haulmont.testtask.model.CustomerOrder;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface CustomerOrderDao {
 
     List<CustomerOrder> getAll();
     CustomerOrder getById(Long id);
+    List<CustomerOrder> getByFields(Long customerId, OrderStatus status, String description);
 }

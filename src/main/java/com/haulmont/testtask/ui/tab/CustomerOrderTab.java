@@ -1,5 +1,6 @@
 package com.haulmont.testtask.ui.tab;
 
+import com.haulmont.testtask.invariants.OrderStatus;
 import com.haulmont.testtask.model.Customer;
 import com.haulmont.testtask.model.CustomerOrder;
 import com.haulmont.testtask.model.Mechanic;
@@ -14,13 +15,12 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.EnumSet;
+import java.util.List;
 
 @SpringComponent
 @UIScope
@@ -43,7 +43,8 @@ public class CustomerOrderTab extends VerticalLayout {
         updateGridData();
         orderGrid.set();
 
-        addComponent(getButtonGroup());
+        addComponent( getGridToolbar() );
+        addComponent( getFilterFieldGroup() );
         addComponent(orderGrid);
         setExpandRatio(orderGrid, 1);
         setSizeFull();
@@ -55,7 +56,7 @@ public class CustomerOrderTab extends VerticalLayout {
         orderGrid.setContainerDataSource(container);
     }
 
-    private HorizontalLayout getButtonGroup() {
+    private HorizontalLayout getGridToolbar() {
         HorizontalLayout buttonGroup = new HorizontalLayout();
 
         buttonGroup.addComponent( getAddButton() );
@@ -67,6 +68,35 @@ public class CustomerOrderTab extends VerticalLayout {
         buttonGroup.setMargin(true);
 
         return buttonGroup;
+    }
+
+    private HorizontalLayout getFilterFieldGroup() {
+        HorizontalLayout filterFieldGroup = new HorizontalLayout();
+
+        ComboBox customerFilterField = getCustomerFilterField();
+        ComboBox statusFilterField = getOrderStatusFilterField();
+        TextField orderDescriptionFilterField = new TextField("Описание");
+        Button acceptFilterButton = new Button("Применить", clickEvent -> {
+            List<CustomerOrder> orders = orderService.getFilteredOrders(
+                    (Customer) customerFilterField.getValue(),
+                    (OrderStatus) statusFilterField.getValue(),
+                    orderDescriptionFilterField.getValue());
+
+            BeanItemContainer<CustomerOrder> container =
+                    new BeanItemContainer<>(CustomerOrder.class, orders);
+            orderGrid.setContainerDataSource(container);
+        });
+
+        filterFieldGroup.addComponent( customerFilterField );
+        filterFieldGroup.addComponent( statusFilterField );
+        filterFieldGroup.addComponent( orderDescriptionFilterField );
+        filterFieldGroup.addComponent( acceptFilterButton );
+
+        filterFieldGroup.setHeight("150");
+        filterFieldGroup.setWidth("100%");
+        filterFieldGroup.setMargin(true);
+
+        return filterFieldGroup;
     }
 
     private Button getAddButton() {
@@ -144,5 +174,23 @@ public class CustomerOrderTab extends VerticalLayout {
             });
             getUI().addWindow(confirmDialog);
         });
+    }
+
+    private ComboBox getCustomerFilterField() {
+        BeanItemContainer<Customer> container =
+                new BeanItemContainer<>(Customer.class, customerService.getAllCustomers());
+        ComboBox comboBox = new ComboBox("Клиент");
+        comboBox.setContainerDataSource(container);
+
+        return comboBox;
+    }
+
+    private ComboBox getOrderStatusFilterField() {
+        BeanItemContainer<OrderStatus> container =
+                new BeanItemContainer<>(OrderStatus.class, EnumSet.allOf(OrderStatus.class));
+        ComboBox comboBox = new ComboBox("Статус");
+        comboBox.setContainerDataSource(container);
+
+        return comboBox;
     }
 }

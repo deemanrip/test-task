@@ -33,7 +33,7 @@ public class CustomerTab extends VerticalLayout {
         updateGridData();
         customerGrid.set();
 
-        addComponent(getButtonGroup());
+        addComponent(getGridToolbar());
         addComponent(customerGrid);
         setExpandRatio(customerGrid, 1);
         setSizeFull();
@@ -45,7 +45,7 @@ public class CustomerTab extends VerticalLayout {
         customerGrid.setContainerDataSource(container);
     }
 
-    private HorizontalLayout getButtonGroup() {
+    private HorizontalLayout getGridToolbar() {
         HorizontalLayout buttonGroup = new HorizontalLayout();
 
         buttonGroup.addComponent( getAddButton() );

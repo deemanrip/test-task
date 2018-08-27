@@ -33,7 +33,7 @@ public class MechanicTab extends VerticalLayout {
         updateGridData();
         mechanicGrid.set();
 
-        addComponent(getButtonGroup());
+        addComponent(getGridToolbar());
         addComponent(mechanicGrid);
         setExpandRatio(mechanicGrid, 1);
         setSizeFull();
@@ -45,7 +45,7 @@ public class MechanicTab extends VerticalLayout {
         mechanicGrid.setContainerDataSource(container);
     }
 
-    private HorizontalLayout getButtonGroup() {
+    private HorizontalLayout getGridToolbar() {
         HorizontalLayout buttonGroup = new HorizontalLayout();
 
         buttonGroup.addComponent( getAddButton() );
